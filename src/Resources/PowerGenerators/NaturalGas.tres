@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="powerGenerator" load_steps=3 format=3 uid="uid://dg5k4tr1l3mqf"]
+
+[ext_resource type="Script" path="res://src/Scripts/powerGeneteratorStats.gd" id="1_qkmtn"]
+[ext_resource type="Texture2D" uid="uid://g2r6its70acx" path="res://src/Sprites/naturalgas.png" id="2_aqsu0"]
+
+[resource]
+script = ExtResource("1_qkmtn")
+power = 2.0
+pollutionPerSecond = 2.0
+price = 40
+breakChance = 0.05
+sprite = ExtResource("2_aqsu0")

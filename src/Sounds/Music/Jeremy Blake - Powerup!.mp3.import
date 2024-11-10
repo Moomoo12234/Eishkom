@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dhp7p4errkwo4"
+path="res://.godot/imported/Jeremy Blake - Powerup!.mp3-48f34f8326148e5321d461b33613d6d7.mp3str"
+
+[deps]
+
+source_file="res://src/Sounds/Music/Jeremy Blake - Powerup!.mp3"
+dest_files=["res://.godot/imported/Jeremy Blake - Powerup!.mp3-48f34f8326148e5321d461b33613d6d7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

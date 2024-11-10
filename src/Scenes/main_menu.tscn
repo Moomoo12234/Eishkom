@@ -1,0 +1,261 @@
+[gd_scene load_steps=17 format=3 uid="uid://bxnfogoa4k1ha"]
+
+[ext_resource type="Texture2D" uid="uid://b2ytcjs47ql3g" path="res://src/Sprites/bg.png" id="1_07hyj"]
+[ext_resource type="Script" path="res://src/Scripts/main_menu.gd" id="1_qt4lk"]
+[ext_resource type="Texture2D" uid="uid://7fcdrp07poli" path="res://src/Sprites/TitleTransparent.png" id="2_taxhm"]
+[ext_resource type="Texture2D" uid="uid://dpxq3vuocqsdq" path="res://src/Sprites/button.png" id="3_0nsg0"]
+[ext_resource type="AudioStream" uid="uid://bpuml2w66yw4k" path="res://src/Sounds/place.wav" id="3_wpei4"]
+[ext_resource type="PackedScene" uid="uid://ce0msm041j0s8" path="res://src/Scenes/juice.tscn" id="5_qamm1"]
+[ext_resource type="Texture2D" uid="uid://ccdfnj25a6i0q" path="res://src/Sprites/RMB.png" id="6_bqc2u"]
+[ext_resource type="Texture2D" uid="uid://c8jrxnrpkjynu" path="res://src/Sprites/LMB.png" id="7_w8cbq"]
+[ext_resource type="Texture2D" uid="uid://b4sfppkykctlh" path="res://src/Sprites/esc.png" id="8_acxqd"]
+
+[sub_resource type="Animation" id="Animation_nccy0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(576, 175)]
+}
+
+[sub_resource type="Animation" id="Animation_sl4st"]
+resource_name = "hover"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(576, 175), Vector2(576, 150), Vector2(576, 175)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xnsy6"]
+_data = {
+"RESET": SubResource("Animation_nccy0"),
+"hover": SubResource("Animation_sl4st")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_0mcm8"]
+line_spacing = 0.0
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_a5ei2"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_3bvv6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qfqpl"]
+font_size = 32
+
+[node name="mainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qt4lk")
+
+[node name="scrollBarSelect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_wpei4")
+volume_db = -5.0
+
+[node name="BG" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+texture = ExtResource("1_07hyj")
+
+[node name="Title" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(576, 175)
+texture = ExtResource("2_taxhm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Title"]
+libraries = {
+"": SubResource("AnimationLibrary_xnsy6")
+}
+
+[node name="Buttons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 544.0
+offset_top = 360.0
+offset_right = 608.0
+offset_bottom = 488.0
+
+[node name="Play" type="TextureButton" parent="Buttons"]
+texture_filter = 1
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+pivot_offset = Vector2(32, 16)
+texture_normal = ExtResource("3_0nsg0")
+stretch_mode = 0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="Buttons/Play"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+text = "PLAY"
+label_settings = SubResource("LabelSettings_0mcm8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Juice" parent="Buttons/Play" node_paths=PackedStringArray("parent") instance=ExtResource("5_qamm1")]
+parent = NodePath("..")
+scaleFactor = 1.5
+
+[node name="Quit" type="TextureButton" parent="Buttons"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_top = 48.0
+offset_right = 64.0
+offset_bottom = 80.0
+pivot_offset = Vector2(32, 16)
+texture_normal = ExtResource("3_0nsg0")
+stretch_mode = 0
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="Buttons/Quit"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+text = "QUIT"
+label_settings = SubResource("LabelSettings_0mcm8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Juice" parent="Buttons/Quit" node_paths=PackedStringArray("parent") instance=ExtResource("5_qamm1")]
+parent = NodePath("..")
+scaleFactor = 1.5
+
+[node name="Difficulty" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 471.0
+offset_top = 502.0
+offset_right = 681.0
+offset_bottom = 577.0
+
+[node name="HSlider" type="HSlider" parent="Difficulty"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 30.0
+offset_right = 205.0
+offset_bottom = 46.0
+min_value = 1.0
+max_value = 3.0
+value = 2.0
+rounded = true
+
+[node name="Title" type="Label" parent="Difficulty/HSlider"]
+layout_mode = 0
+offset_top = -30.0
+offset_right = 200.0
+offset_bottom = -7.0
+text = "DIFFICULTY"
+horizontal_alignment = 1
+
+[node name="Title2" type="Label" parent="Difficulty/HSlider"]
+layout_mode = 0
+offset_top = 18.0
+offset_right = 200.0
+offset_bottom = 41.0
+text = "Easy         Normal       Hard"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_top = 603.0
+offset_right = 244.0
+offset_bottom = 648.0
+text = "By MoomooDev"
+label_settings = SubResource("LabelSettings_a5ei2")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 838.0
+offset_top = 312.0
+offset_right = 1136.0
+offset_bottom = 606.0
+
+[node name="Label2" type="Label" parent="Panel"]
+layout_mode = 0
+offset_top = 43.0
+offset_right = 298.0
+offset_bottom = 170.0
+text = "Try to keep up with the power demand by keeping your Power Surplus over 0
+and try to keep it green or you will lose."
+label_settings = SubResource("LabelSettings_3bvv6")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="Panel"]
+texture_filter = 1
+position = Vector2(53, 187)
+scale = Vector2(2, 2)
+texture = ExtResource("6_bqc2u")
+
+[node name="Label" type="Label" parent="Panel/Sprite2D"]
+offset_left = 6.5
+offset_top = -11.5
+offset_right = 87.5
+offset_bottom = 33.5
+scale = Vector2(0.5, 0.5)
+text = " / sell"
+label_settings = SubResource("LabelSettings_qfqpl")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Panel"]
+texture_filter = 1
+position = Vector2(53, 227)
+scale = Vector2(2, 2)
+texture = ExtResource("7_w8cbq")
+
+[node name="Label" type="Label" parent="Panel/Sprite2D2"]
+offset_left = 6.5
+offset_top = -11.5
+offset_right = 87.5
+offset_bottom = 33.5
+scale = Vector2(0.5, 0.5)
+text = " / buy or fix"
+label_settings = SubResource("LabelSettings_qfqpl")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Panel"]
+texture_filter = 1
+position = Vector2(53, 267)
+scale = Vector2(2, 2)
+texture = ExtResource("8_acxqd")
+
+[node name="Label" type="Label" parent="Panel/Sprite2D3"]
+offset_left = 6.5
+offset_top = -11.5
+offset_right = 87.5
+offset_bottom = 33.5
+scale = Vector2(0.5, 0.5)
+text = " / main menu"
+label_settings = SubResource("LabelSettings_qfqpl")
+
+[node name="Label3" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 298.0
+offset_bottom = 45.0
+text = "TUTORIAL"
+label_settings = SubResource("LabelSettings_a5ei2")
+horizontal_alignment = 1
+
+[connection signal="animation_finished" from="Title/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]
+[connection signal="drag_ended" from="Difficulty/HSlider" to="." method="_on_h_slider_drag_ended"]

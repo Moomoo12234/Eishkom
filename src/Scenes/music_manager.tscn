@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dy682c5db7eie"]
+
+[ext_resource type="Script" path="res://src/Scripts/music_manager.gd" id="1_au3i0"]
+[ext_resource type="AudioStream" uid="uid://dhp7p4errkwo4" path="res://src/Sounds/Music/Jeremy Blake - Powerup!.mp3" id="1_ucmt8"]
+[ext_resource type="AudioStream" uid="uid://dxrec16gs26x5" path="res://src/Sounds/Music/Kevin MacLeod - Itty Bitty 8 Bit.mp3" id="2_endts"]
+[ext_resource type="AudioStream" uid="uid://cwj86cvwyu0no" path="res://src/Sounds/Music/Kevin MacLeod - Pixelland.mp3" id="3_a83ai"]
+
+[node name="MusicManager" type="Node"]
+script = ExtResource("1_au3i0")
+
+[node name="music1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_ucmt8")
+volume_db = -20.0
+
+[node name="music2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_endts")
+volume_db = -20.0
+
+[node name="music3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_a83ai")
+volume_db = -20.0
+
+[connection signal="finished" from="music1" to="." method="_on_music_1_finished"]
+[connection signal="finished" from="music2" to="." method="_on_music_2_finished"]
+[connection signal="finished" from="music3" to="." method="_on_music_3_finished"]

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ce0msm041j0s8"]
+
+[ext_resource type="Script" path="res://src/Scripts/juice.gd" id="1_lc4h5"]
+[ext_resource type="AudioStream" uid="uid://bb5kfjaegtu65" path="res://src/Sounds/hover.wav" id="2_0ogey"]
+
+[node name="Juice" type="Node2D"]
+script = ExtResource("1_lc4h5")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_0ogey")
+volume_db = -20.0
+pitch_scale = 0.8

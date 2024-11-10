@@ -1,0 +1,121 @@
+[gd_scene load_steps=9 format=3 uid="uid://2nq1msafcd21"]
+
+[ext_resource type="Texture2D" uid="uid://csehtsv222yv" path="res://src/Sprites/pauseTitle.png" id="1_2i4mh"]
+[ext_resource type="Script" path="res://src/Scripts/pause.gd" id="1_k1jfp"]
+[ext_resource type="Texture2D" uid="uid://dpxq3vuocqsdq" path="res://src/Sprites/button.png" id="2_831y2"]
+[ext_resource type="Shader" path="res://src/Scripts/dead.gdshader" id="2_pxlct"]
+[ext_resource type="PackedScene" uid="uid://ce0msm041j0s8" path="res://src/Scenes/juice.tscn" id="3_8kram"]
+[ext_resource type="Texture2D" uid="uid://drncmn2441db0" path="res://src/Sprites/pixel.png" id="3_h56rb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rjekg"]
+shader = ExtResource("2_pxlct")
+shader_parameter/strength = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_d2r5f"]
+line_spacing = 0.0
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[node name="Pause" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k1jfp")
+
+[node name="BG" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_rjekg")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("3_h56rb")
+
+[node name="PauseTitle" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(576, 175)
+texture = ExtResource("1_2i4mh")
+
+[node name="Buttons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 544.0
+offset_top = 360.0
+offset_right = 608.0
+offset_bottom = 488.0
+
+[node name="Play" type="TextureButton" parent="Buttons"]
+texture_filter = 1
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+pivot_offset = Vector2(32, 16)
+texture_normal = ExtResource("2_831y2")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Buttons/Play"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+text = "PLAY"
+label_settings = SubResource("LabelSettings_d2r5f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Juice" parent="Buttons/Play" node_paths=PackedStringArray("parent") instance=ExtResource("3_8kram")]
+parent = NodePath("..")
+scaleFactor = 1.5
+
+[node name="Quit" type="TextureButton" parent="Buttons"]
+visible = false
+texture_filter = 1
+layout_mode = 0
+offset_top = 48.0
+offset_right = 64.0
+offset_bottom = 80.0
+pivot_offset = Vector2(32, 16)
+texture_normal = ExtResource("2_831y2")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Buttons/Quit"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+text = "QUIT"
+label_settings = SubResource("LabelSettings_d2r5f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Juice" parent="Buttons/Quit" node_paths=PackedStringArray("parent") instance=ExtResource("3_8kram")]
+parent = NodePath("..")
+scaleFactor = 1.5
+
+[node name="Menu" type="TextureButton" parent="Buttons"]
+texture_filter = 1
+layout_mode = 0
+offset_top = 96.0
+offset_right = 64.0
+offset_bottom = 128.0
+pivot_offset = Vector2(32, 16)
+texture_normal = ExtResource("2_831y2")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Buttons/Menu"]
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 32.0
+text = "MENU"
+label_settings = SubResource("LabelSettings_d2r5f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Juice" parent="Buttons/Menu" node_paths=PackedStringArray("parent") instance=ExtResource("3_8kram")]
+parent = NodePath("..")
+scaleFactor = 1.5
+
+[node name="Node" type="Node" parent="."]
+
+[connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Buttons/Menu" to="." method="_on_menu_pressed"]

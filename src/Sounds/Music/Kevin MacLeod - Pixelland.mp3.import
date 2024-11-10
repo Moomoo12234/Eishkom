@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cwj86cvwyu0no"
+path="res://.godot/imported/Kevin MacLeod - Pixelland.mp3-79a082a21632e01bae531d51a633f051.mp3str"
+
+[deps]
+
+source_file="res://src/Sounds/Music/Kevin MacLeod - Pixelland.mp3"
+dest_files=["res://.godot/imported/Kevin MacLeod - Pixelland.mp3-79a082a21632e01bae531d51a633f051.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

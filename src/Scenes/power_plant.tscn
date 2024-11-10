@@ -1,0 +1,88 @@
+[gd_scene load_steps=12 format=3 uid="uid://ca6ojs6ei5465"]
+
+[ext_resource type="Texture2D" uid="uid://cvev4bdriq2ub" path="res://src/Sprites/wind.png" id="1_4ynsx"]
+[ext_resource type="Script" path="res://src/Scripts/powerPlant.gd" id="1_7u4c1"]
+[ext_resource type="AudioStream" uid="uid://bpuml2w66yw4k" path="res://src/Sounds/place.wav" id="2_vhdt8"]
+[ext_resource type="AudioStream" uid="uid://j3cee17i2j8d" path="res://src/Sounds/sell.wav" id="3_6mtp3"]
+[ext_resource type="AudioStream" uid="uid://bpscbr7tocauv" path="res://src/Sounds/break.wav" id="4_5wm38"]
+[ext_resource type="Texture2D" uid="uid://ck3obbqq7ybs4" path="res://src/Sprites/x.png" id="5_3o885"]
+[ext_resource type="AudioStream" uid="uid://frwhmqqpo6qn" path="res://src/Sounds/fix.wav" id="5_87i8m"]
+
+[sub_resource type="Curve" id="Curve_xjwxl"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_62kva"]
+curve = SubResource("Curve_xjwxl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8uote"]
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 75.0
+initial_velocity_max = 125.0
+gravity = Vector3(0, 0, 0)
+damping_min = 1.0
+damping_max = 4.0
+damping_curve = SubResource("CurveTexture_62kva")
+scale_min = 4.0
+scale_max = 5.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hcvqq"]
+size = Vector2(30, 30)
+
+[node name="PowerPlant" type="StaticBody2D"]
+script = ExtResource("1_7u4c1")
+
+[node name="Place" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_vhdt8")
+volume_db = -10.0
+
+[node name="Sell" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6mtp3")
+volume_db = -10.0
+
+[node name="Break" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_5wm38")
+volume_db = -10.0
+
+[node name="Fix" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_87i8m")
+volume_db = -10.0
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="breakDelay" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_8uote")
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_4ynsx")
+
+[node name="cross" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("5_3o885")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_hcvqq")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="breakDelay" to="." method="_on_break_delay_timeout"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

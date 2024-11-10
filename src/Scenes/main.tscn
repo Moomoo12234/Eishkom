@@ -1,0 +1,539 @@
+[gd_scene load_steps=44 format=3 uid="uid://d0aefcbd60ntq"]
+
+[ext_resource type="Script" path="res://src/Scripts/main.gd" id="1_wwgkg"]
+[ext_resource type="Texture2D" uid="uid://b2ytcjs47ql3g" path="res://src/Sprites/bg.png" id="2_hl62w"]
+[ext_resource type="AudioStream" uid="uid://4p7sml32gnuh" path="res://src/Sounds/alarm.mp3" id="2_mmpgd"]
+[ext_resource type="Script" path="res://src/Scripts/shop.gd" id="2_ur5sv"]
+[ext_resource type="Script" path="res://src/Scripts/powerGeneteratorStats.gd" id="3_0oj5g"]
+[ext_resource type="Resource" uid="uid://cw60a7u2sqo5u" path="res://src/Resources/PowerGenerators/Wind.tres" id="3_3d8lw"]
+[ext_resource type="AudioStream" uid="uid://blf5ib7l7todl" path="res://src/Sounds/poor.wav" id="4_af2sl"]
+[ext_resource type="PackedScene" uid="uid://ca6ojs6ei5465" path="res://src/Scenes/power_plant.tscn" id="4_ibq1d"]
+[ext_resource type="AudioStream" uid="uid://dmulftkpkwif3" path="res://src/Sounds/dead.wav" id="5_7nn41"]
+[ext_resource type="Texture2D" uid="uid://cvev4bdriq2ub" path="res://src/Sprites/wind.png" id="5_bklfm"]
+[ext_resource type="Resource" uid="uid://dh112vsvvrnq6" path="res://src/Resources/PowerGenerators/Coal.tres" id="5_wi1sa"]
+[ext_resource type="Resource" uid="uid://b7ecbgpegdd1a" path="res://src/Resources/PowerGenerators/Solar.tres" id="6_aw1b3"]
+[ext_resource type="Shader" path="res://src/Scripts/grey.gdshader" id="6_bx5ny"]
+[ext_resource type="Script" path="res://src/Scripts/stats.gd" id="7_livd2"]
+[ext_resource type="Resource" uid="uid://dg5k4tr1l3mqf" path="res://src/Resources/PowerGenerators/NaturalGas.tres" id="7_lk25s"]
+[ext_resource type="Resource" uid="uid://csxi2smdrnypg" path="res://src/Resources/PowerGenerators/CarbonSucker.tres" id="8_mqbsm"]
+[ext_resource type="Resource" uid="uid://bm5mx5mmoqnnv" path="res://src/Resources/PowerGenerators/Forest.tres" id="9_64i5m"]
+[ext_resource type="Texture2D" uid="uid://cg2u4o5nw25yd" path="res://src/Sprites/coal.png" id="11_addrk"]
+[ext_resource type="Texture2D" uid="uid://c7ivty0smi5eu" path="res://src/Sprites/solar.png" id="12_hbojn"]
+[ext_resource type="Texture2D" uid="uid://g2r6its70acx" path="res://src/Sprites/naturalgas.png" id="13_ef1og"]
+[ext_resource type="AudioStream" uid="uid://un4u8olux02u" path="res://src/Sounds/buy.wav" id="13_hib7w"]
+[ext_resource type="Resource" uid="uid://ueq2mwd6px2d" path="res://src/Resources/PowerGenerators/Nuclear.tres" id="14_6pbrm"]
+[ext_resource type="Texture2D" uid="uid://ciyt2vn13klgx" path="res://src/Sprites/carbonSucker.png" id="15_bjc3h"]
+[ext_resource type="PackedScene" uid="uid://ce0msm041j0s8" path="res://src/Scenes/juice.tscn" id="16_74jsl"]
+[ext_resource type="Texture2D" uid="uid://cuudyqq1dgpq8" path="res://src/Sprites/forest.png" id="17_p2gi0"]
+[ext_resource type="PackedScene" uid="uid://slhpnvgkuecu" path="res://src/Scenes/dead.tscn" id="20_d5ljy"]
+[ext_resource type="Texture2D" uid="uid://dtkx45h1g6w80" path="res://src/Sprites/nuclearReactor.png" id="24_tdtua"]
+[ext_resource type="PackedScene" uid="uid://2nq1msafcd21" path="res://src/Scenes/pause.tscn" id="29_ph2yk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v88l7"]
+size = Vector2(312, 82)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efy3w"]
+size = Vector2(120, 136)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hetq8"]
+size = Vector2(1152, 27)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j1vnd"]
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_el578"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jl2mw"]
+bg_color = Color(0.24, 0.12, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yfdf6"]
+shader = ExtResource("6_bx5ny")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[sub_resource type="Shader" id="Shader_cjiia"]
+code = "shader_type canvas_item;
+
+uniform vec4 tint_colour: source_color;
+uniform bool tint;
+
+void fragment() {
+	if (tint) {
+		vec4 greyscale = mix(COLOR, tint_colour, 0.5);
+		if (COLOR.a != 0.0) {
+			COLOR = greyscale;
+		}
+	}
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the CanvasItem.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7wdvi"]
+shader = SubResource("Shader_cjiia")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gvlrj"]
+shader = SubResource("Shader_cjiia")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qmp0h"]
+shader = SubResource("Shader_cjiia")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5wp0r"]
+shader = SubResource("Shader_cjiia")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_qvf8u"]
+font_size = 12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y8mq7"]
+shader = SubResource("Shader_cjiia")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_51lcr"]
+shader = SubResource("Shader_cjiia")
+shader_parameter/tint_colour = null
+shader_parameter/tint = false
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_wwgkg")
+
+[node name="Alarm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_mmpgd")
+volume_db = -10.0
+pitch_scale = 0.5
+
+[node name="Buy" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_hib7w")
+volume_db = -20.0
+
+[node name="Poor" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_af2sl")
+volume_db = -20.0
+
+[node name="DeadSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_7nn41")
+volume_db = -20.0
+
+[node name="StatsTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="DemandTimer" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="BG" type="Sprite2D" parent="."]
+position = Vector2(576, 324)
+texture = ExtResource("2_hl62w")
+
+[node name="PowerGeneratorsContainer" type="Node2D" parent="."]
+
+[node name="NoNoPlace" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="NoNoPlace"]
+position = Vector2(0, 566)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NoNoPlace/Area2D"]
+position = Vector2(156, 41)
+shape = SubResource("RectangleShape2D_v88l7")
+
+[node name="Area2D2" type="Area2D" parent="NoNoPlace"]
+position = Vector2(0, 566)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NoNoPlace/Area2D2"]
+position = Vector2(60, -68)
+shape = SubResource("RectangleShape2D_efy3w")
+
+[node name="Area2D3" type="Area2D" parent="NoNoPlace"]
+position = Vector2(0, 566)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NoNoPlace/Area2D3"]
+position = Vector2(576, 68.5)
+shape = SubResource("RectangleShape2D_hetq8")
+
+[node name="Stats" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("7_livd2")
+metadata/_edit_use_anchors_ = true
+
+[node name="Money" type="Control" parent="Stats"]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 529.0
+offset_right = 120.0
+offset_bottom = 558.0
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="Stats/Money"]
+layout_mode = 0
+offset_top = 5.0
+offset_right = 112.0
+offset_bottom = 28.0
+
+[node name="money" type="Label" parent="Stats/Money"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 5.0
+offset_right = 76.0
+offset_bottom = 28.0
+text = "$500"
+horizontal_alignment = 1
+
+[node name="powerGeneration" type="Control" parent="Stats"]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 430.0
+offset_right = 120.0
+offset_bottom = 526.0
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="Stats/powerGeneration"]
+layout_mode = 0
+offset_right = 112.0
+offset_bottom = 96.0
+
+[node name="Title" type="Label" parent="Stats/powerGeneration"]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 112.0
+offset_bottom = 24.0
+text = "Power Surplus"
+
+[node name="Label" type="Label" parent="Stats/powerGeneration"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 24.0
+offset_right = 76.0
+offset_bottom = 47.0
+text = "50"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Stats/powerGeneration"]
+layout_mode = 0
+offset_top = 45.0
+offset_right = 112.0
+offset_bottom = 72.0
+max_value = 10.0
+value = 1.0
+show_percentage = false
+
+[node name="Label2" type="Label" parent="Stats/powerGeneration"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 72.0
+offset_right = 76.0
+offset_bottom = 95.0
+text = "-10"
+label_settings = SubResource("LabelSettings_j1vnd")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Pollution" type="Control" parent="Stats"]
+anchors_preset = 0
+offset_top = 621.0
+offset_right = 40.0
+offset_bottom = 661.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ProgressBar" type="ProgressBar" parent="Stats/Pollution"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 27.0
+theme_override_styles/background = SubResource("StyleBoxFlat_el578")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jl2mw")
+max_value = 200.0
+value = 50.0
+show_percentage = false
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Stats/Pollution"]
+layout_mode = 0
+offset_left = 545.0
+offset_right = 607.0
+offset_bottom = 23.0
+text = "100/200"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="Stats/Pollution"]
+layout_mode = 0
+offset_left = 541.0
+offset_top = -24.0
+offset_right = 610.0
+offset_bottom = -1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="Stats/Pollution"]
+layout_mode = 0
+offset_left = 541.0
+offset_top = -24.0
+offset_right = 611.0
+offset_bottom = -1.0
+text = "Pollution"
+metadata/_edit_use_anchors_ = true
+
+[node name="Shop" type="Control" parent="." node_paths=PackedStringArray("powerGeneratorsContainer", "buySound", "poorSound")]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 566.0
+offset_right = 312.0
+offset_bottom = 621.0
+script = ExtResource("2_ur5sv")
+powerGenerators = Array[ExtResource("3_0oj5g")]([ExtResource("5_wi1sa"), ExtResource("6_aw1b3"), ExtResource("7_lk25s"), ExtResource("3_3d8lw"), ExtResource("14_6pbrm"), ExtResource("9_64i5m"), ExtResource("8_mqbsm")])
+powerPlant = ExtResource("4_ibq1d")
+powerGeneratorsContainer = NodePath("../PowerGeneratorsContainer")
+buySound = NodePath("../Buy")
+poorSound = NodePath("../Poor")
+metadata/_edit_use_anchors_ = true
+
+[node name="coal" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 8.0
+offset_right = 40.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/coal"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_yfdf6")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("11_addrk")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/coal/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/coal"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="solar" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 48.0
+offset_right = 80.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/solar"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_7wdvi")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("12_hbojn")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/solar/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/solar"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="naturalGas" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 88.0
+offset_right = 120.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/naturalGas"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_gvlrj")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("13_ef1og")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/naturalGas/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/naturalGas"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="wind" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 128.0
+offset_right = 160.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/wind"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_qmp0h")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("5_bklfm")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/wind/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/wind"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="nuclear" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 168.0
+offset_right = 200.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/nuclear"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_5wp0r")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("24_tdtua")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/nuclear/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/nuclear"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Forest" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 240.0
+offset_right = 272.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/Forest"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_y8mq7")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("17_p2gi0")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/Forest/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/Forest"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="carbonSucker" type="Panel" parent="Shop"]
+layout_mode = 0
+offset_left = 280.0
+offset_right = 312.0
+offset_bottom = 55.0
+pivot_offset = Vector2(16, 27)
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureButton" type="TextureButton" parent="Shop/carbonSucker"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_51lcr")
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 55.0
+texture_normal = ExtResource("15_bjc3h")
+stretch_mode = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Juice" parent="Shop/carbonSucker/TextureButton" node_paths=PackedStringArray("parent") instance=ExtResource("16_74jsl")]
+parent = NodePath("../..")
+scaleFactor = 1.2
+
+[node name="Label" type="Label" parent="Shop/carbonSucker"]
+layout_mode = 0
+offset_top = 32.0
+offset_right = 32.0
+offset_bottom = 55.0
+text = "$1"
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Dead" parent="." instance=ExtResource("20_d5ljy")]
+offset_left = 1252.0
+offset_right = 1252.0
+metadata/_edit_use_anchors_ = true
+
+[node name="Pause" parent="." instance=ExtResource("29_ph2yk")]
+offset_left = 1252.0
+offset_right = 1252.0
+
+[connection signal="timeout" from="StatsTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="DemandTimer" to="." method="_on_demand_timer_timeout"]
+[connection signal="pressed" from="Shop/coal/TextureButton" to="Shop" method="_on_texture_button_coal_pressed"]
+[connection signal="pressed" from="Shop/solar/TextureButton" to="Shop" method="_on_texture_button_solar_pressed"]
+[connection signal="pressed" from="Shop/naturalGas/TextureButton" to="Shop" method="_on_texture_button_naturalGas_pressed"]
+[connection signal="pressed" from="Shop/wind/TextureButton" to="Shop" method="_on_texture_button_wind_pressed"]
+[connection signal="pressed" from="Shop/nuclear/TextureButton" to="Shop" method="_on_texture_button_nuclear_pressed"]
+[connection signal="pressed" from="Shop/Forest/TextureButton" to="Shop" method="_on_texture_button_forest_pressed"]
+[connection signal="pressed" from="Shop/carbonSucker/TextureButton" to="Shop" method="_on_texture_button_carbonSucker_pressed"]
+[connection signal="play" from="Pause" to="." method="_on_pause_play"]

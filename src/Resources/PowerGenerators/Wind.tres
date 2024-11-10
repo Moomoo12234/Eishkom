@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="powerGenerator" load_steps=3 format=3 uid="uid://cw60a7u2sqo5u"]
+
+[ext_resource type="Script" path="res://src/Scripts/powerGeneteratorStats.gd" id="1_iohbr"]
+[ext_resource type="Texture2D" uid="uid://cvev4bdriq2ub" path="res://src/Sprites/wind.png" id="2_q0o2l"]
+
+[resource]
+script = ExtResource("1_iohbr")
+power = 2.0
+pollutionPerSecond = 0.0
+price = 50
+breakChance = 0.05
+sprite = ExtResource("2_q0o2l")
