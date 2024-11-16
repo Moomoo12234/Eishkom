@@ -1,9 +1,10 @@
-[gd_scene load_steps=44 format=3 uid="uid://d0aefcbd60ntq"]
+[gd_scene load_steps=45 format=3 uid="uid://d0aefcbd60ntq"]
 
 [ext_resource type="Script" path="res://src/Scripts/main.gd" id="1_wwgkg"]
 [ext_resource type="Texture2D" uid="uid://b2ytcjs47ql3g" path="res://src/Sprites/bg.png" id="2_hl62w"]
 [ext_resource type="AudioStream" uid="uid://4p7sml32gnuh" path="res://src/Sounds/alarm.mp3" id="2_mmpgd"]
 [ext_resource type="Script" path="res://src/Scripts/shop.gd" id="2_ur5sv"]
+[ext_resource type="Environment" uid="uid://w37stpodsi4d" path="res://src/Resources/env.tres" id="2_w2p3v"]
 [ext_resource type="Script" path="res://src/Scripts/powerGeneteratorStats.gd" id="3_0oj5g"]
 [ext_resource type="Resource" uid="uid://cw60a7u2sqo5u" path="res://src/Resources/PowerGenerators/Wind.tres" id="3_3d8lw"]
 [ext_resource type="AudioStream" uid="uid://blf5ib7l7todl" path="res://src/Sounds/poor.wav" id="4_af2sl"]
@@ -30,10 +31,10 @@
 [ext_resource type="PackedScene" uid="uid://2nq1msafcd21" path="res://src/Scenes/pause.tscn" id="29_ph2yk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v88l7"]
-size = Vector2(312, 82)
+size = Vector2(312, 137)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_efy3w"]
-size = Vector2(120, 136)
+size = Vector2(120, 81)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hetq8"]
 size = Vector2(1152, 27)
@@ -43,14 +44,25 @@ font_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_el578"]
 bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jl2mw"]
 bg_color = Color(0.24, 0.12, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yfdf6"]
 shader = ExtResource("6_bx5ny")
 shader_parameter/tint_colour = null
 shader_parameter/tint = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_qvf8u"]
+font_size = 12
 
 [sub_resource type="Shader" id="Shader_cjiia"]
 code = "shader_type canvas_item;
@@ -93,9 +105,6 @@ shader = SubResource("Shader_cjiia")
 shader_parameter/tint_colour = null
 shader_parameter/tint = false
 
-[sub_resource type="LabelSettings" id="LabelSettings_qvf8u"]
-font_size = 12
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y8mq7"]
 shader = SubResource("Shader_cjiia")
 shader_parameter/tint_colour = null
@@ -108,6 +117,10 @@ shader_parameter/tint = false
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_wwgkg")
+env = ExtResource("2_w2p3v")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_w2p3v")
 
 [node name="Alarm" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_mmpgd")
@@ -144,14 +157,14 @@ texture = ExtResource("2_hl62w")
 position = Vector2(0, 566)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NoNoPlace/Area2D"]
-position = Vector2(156, 41)
+position = Vector2(156, 13.5)
 shape = SubResource("RectangleShape2D_v88l7")
 
 [node name="Area2D2" type="Area2D" parent="NoNoPlace"]
 position = Vector2(0, 566)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NoNoPlace/Area2D2"]
-position = Vector2(60, -68)
+position = Vector2(60, -95.5)
 shape = SubResource("RectangleShape2D_efy3w")
 
 [node name="Area2D3" type="Area2D" parent="NoNoPlace"]
@@ -173,7 +186,6 @@ offset_left = 8.0
 offset_top = 529.0
 offset_right = 120.0
 offset_bottom = 558.0
-metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="Stats/Money"]
@@ -189,6 +201,31 @@ offset_top = 5.0
 offset_right = 76.0
 offset_bottom = 28.0
 text = "$500"
+horizontal_alignment = 1
+
+[node name="Panel2" type="Panel" parent="Stats/Money"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = -18.0
+offset_right = 232.0
+offset_bottom = 28.0
+
+[node name="scoreTitle" type="Label" parent="Stats/Money"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = -18.0
+offset_right = 231.0
+offset_bottom = 5.0
+text = "Score"
+horizontal_alignment = 1
+
+[node name="score" type="Label" parent="Stats/Money"]
+layout_mode = 0
+offset_left = 121.0
+offset_top = 5.0
+offset_right = 232.0
+offset_bottom = 28.0
+text = "1000000"
 horizontal_alignment = 1
 
 [node name="powerGeneration" type="Control" parent="Stats"]
@@ -269,7 +306,10 @@ horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="Stats/Pollution"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.05
+anchor_right = 0.05
 offset_left = 541.0
 offset_top = -24.0
 offset_right = 610.0
@@ -327,7 +367,9 @@ offset_top = 32.0
 offset_right = 32.0
 offset_bottom = 55.0
 text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
 horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="solar" type="Panel" parent="Shop"]
@@ -358,7 +400,9 @@ offset_top = 32.0
 offset_right = 32.0
 offset_bottom = 55.0
 text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
 horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="naturalGas" type="Panel" parent="Shop"]
@@ -389,7 +433,9 @@ offset_top = 32.0
 offset_right = 32.0
 offset_bottom = 55.0
 text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
 horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="wind" type="Panel" parent="Shop"]
@@ -420,7 +466,9 @@ offset_top = 32.0
 offset_right = 32.0
 offset_bottom = 55.0
 text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
 horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="nuclear" type="Panel" parent="Shop"]
@@ -484,7 +532,9 @@ offset_top = 32.0
 offset_right = 32.0
 offset_bottom = 55.0
 text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
 horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="carbonSucker" type="Panel" parent="Shop"]
@@ -515,7 +565,9 @@ offset_top = 32.0
 offset_right = 32.0
 offset_bottom = 55.0
 text = "$1"
+label_settings = SubResource("LabelSettings_qvf8u")
 horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Dead" parent="." instance=ExtResource("20_d5ljy")]

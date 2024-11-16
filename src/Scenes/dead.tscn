@@ -18,6 +18,8 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7m8qu"]
 font_size = 50
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Dead" type="Control"]
 layout_mode = 3
@@ -65,7 +67,6 @@ parent = NodePath("..")
 scaleFactor = 1.5
 
 [node name="Quit" type="TextureButton" parent="Buttons"]
-visible = false
 texture_filter = 1
 layout_mode = 0
 offset_top = 48.0
@@ -117,12 +118,22 @@ position = Vector2(576, 175)
 texture = ExtResource("6_lljsg")
 
 [node name="Score" type="Label" parent="Title"]
-offset_left = 296.0
+offset_left = -576.0
 offset_top = 76.0
-offset_right = 442.0
+offset_right = 576.0
 offset_bottom = 145.0
-text = "300"
+text = "Your Score Was: 300"
 label_settings = SubResource("LabelSettings_7m8qu")
+horizontal_alignment = 1
+
+[node name="Highscore" type="Label" parent="Title"]
+offset_left = -576.0
+offset_top = 377.0
+offset_right = 576.0
+offset_bottom = 446.0
+text = "Highscore: "
+label_settings = SubResource("LabelSettings_7m8qu")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="Buttons/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Buttons/Quit" to="." method="_on_quit_pressed"]

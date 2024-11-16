@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GlobalStats="*res://src/Scripts/globalStats.gd"
 MusicManager="*res://src/Scenes/music_manager.tscn"
+SaveManager="*res://src/Scenes/save_manager.tscn"
 
 [display]
 

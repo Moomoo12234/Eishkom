@@ -36,3 +36,5 @@ var paused = false
 var broken: int = 0
 var maxBroken: int = 0
 var canBreak: bool = true
+
+var bloom: bool = true

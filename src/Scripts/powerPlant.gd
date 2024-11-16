@@ -7,6 +7,15 @@ var placed = false
 var hovered = false
 var broken = false
 var canBreak = true
+var canPlace = false
+
+func checkPlace():
+	if not placed and not len($Area2D.get_overlapping_areas()) > 0:
+		canPlace = true
+		$Sprite2D.material.set_shader_parameter("colour", 1)
+	if not placed and len($Area2D.get_overlapping_areas()) > 0:
+		$Sprite2D.material.set_shader_parameter("colour", 2)
+		canPlace = false
 
 func failPlace() -> void:
 	$Break.play()
@@ -73,9 +82,8 @@ func place() -> void:
 	GlobalStats.moneyPerSecond += powerGeneratorStats.power
 	$GPUParticles2D.emitting = true
 	$Place.play()
-	var tween = create_tween()
-	tween.tween_property($Sprite2D, "scale", Vector2(1.6, 1.6), 0.1)
-	tween.tween_property($Sprite2D, "scale", Vector2(2, 2), 0.1)
+	$Sprite2D.material.set_shader_parameter("enabled", false)
+	$AnimationPlayer.play("place")
 
 func move() -> void:
 	position = Vector2(lockGrid(get_global_mouse_position().x), lockGrid(get_global_mouse_position().y))
@@ -84,6 +92,7 @@ func _onready() -> void:
 	updateSprite()
 	
 func _process(delta: float) -> void:
+	checkPlace()
 	actions()
 
 func _on_timer_timeout() -> void:

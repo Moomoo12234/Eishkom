@@ -1,22 +1,32 @@
 extends Node2D
 
+@export var env: Environment
+
+func toggleBloom():
+	if not GlobalStats.bloom:
+		$WorldEnvironment.environment = null
+	else:
+		$WorldEnvironment.environment = env
+
 func unPause() -> void:
 	$Pause.position.x = 1252
 	GlobalStats.paused = false
-	$DemandTimer.start()
-	$StatsTimer.start()
+	$DemandTimer.paused = false
+	$StatsTimer.paused = false
 
 func pause() -> void:
 	$Pause.position.x = 0
 	GlobalStats.paused = true
-	$DemandTimer.stop()
-	$StatsTimer.stop()
+	$DemandTimer.paused = true
+	$StatsTimer.paused = true
 
 func setDifficulty():
 	$DemandTimer.start(5 * (4 - GlobalStats.difficulty))
 	$Stats/powerGeneration/ProgressBar.max_value = $DemandTimer.wait_time
 
 func die():
+	if int(SaveManager.loadData()) < GlobalStats.score:
+		SaveManager.saveData(str(GlobalStats.score))
 	$Dead.updateStats()
 	$Dead.position.x = 0
 	GlobalStats.paused = true
@@ -40,6 +50,7 @@ func updateStats():
 
 func _ready() -> void:
 	setDifficulty()
+	toggleBloom()
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("Pause"):

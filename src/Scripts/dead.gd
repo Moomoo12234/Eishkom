@@ -1,7 +1,8 @@
 extends Control
 
 func updateStats() -> void:
-	$Title/Score.text = str(GlobalStats.score)
+	$Title/Score.text = "Your Score Was: " + str(GlobalStats.score)
+	$Title/Highscore.text = "Highscore: " + str(SaveManager.loadData())
 
 func _on_play_pressed() -> void:
 	GlobalStats.reset()

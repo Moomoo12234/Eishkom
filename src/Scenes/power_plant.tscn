@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ca6ojs6ei5465"]
+[gd_scene load_steps=17 format=3 uid="uid://ca6ojs6ei5465"]
 
 [ext_resource type="Texture2D" uid="uid://cvev4bdriq2ub" path="res://src/Sprites/wind.png" id="1_4ynsx"]
 [ext_resource type="Script" path="res://src/Scripts/powerPlant.gd" id="1_7u4c1"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bpscbr7tocauv" path="res://src/Sounds/break.wav" id="4_5wm38"]
 [ext_resource type="Texture2D" uid="uid://ck3obbqq7ybs4" path="res://src/Sprites/x.png" id="5_3o885"]
 [ext_resource type="AudioStream" uid="uid://frwhmqqpo6qn" path="res://src/Sounds/fix.wav" id="5_87i8m"]
+[ext_resource type="Shader" path="res://src/Scripts/greenRed.gdshader" id="6_x6jrd"]
 
 [sub_resource type="Curve" id="Curve_xjwxl"]
 max_value = 100.0
@@ -29,8 +30,77 @@ damping_curve = SubResource("CurveTexture_62kva")
 scale_min = 4.0
 scale_max = 5.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_osjbc"]
+resource_local_to_scene = true
+shader = ExtResource("6_x6jrd")
+shader_parameter/col1 = Color(0, 1, 0, 1)
+shader_parameter/col2 = Color(1, 0, 0, 1)
+shader_parameter/colour = 1
+shader_parameter/enabled = true
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hcvqq"]
 size = Vector2(30, 30)
+
+[sub_resource type="Animation" id="Animation_a1t0r"]
+resource_name = "place"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.6, 1.6), Vector2(2, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0872665, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_f8kir"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_grjcb"]
+_data = {
+"RESET": SubResource("Animation_f8kir"),
+"place": SubResource("Animation_a1t0r")
+}
 
 [node name="PowerPlant" type="StaticBody2D"]
 script = ExtResource("1_7u4c1")
@@ -67,6 +137,7 @@ explosiveness = 1.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_osjbc")
 scale = Vector2(2, 2)
 texture = ExtResource("1_4ynsx")
 
@@ -77,10 +148,16 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_3o885")
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_hcvqq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_grjcb")
+}
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="breakDelay" to="." method="_on_break_delay_timeout"]
